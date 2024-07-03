@@ -49,5 +49,4 @@ class CountType {
     ''');
     print("$countTypeTable created");
   }
-
 }
