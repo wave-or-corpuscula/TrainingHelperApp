@@ -32,5 +32,56 @@ class DatabaseHelper {
     CountType.createTable(db);
   }
 
-  
+  // CountType queryes //
+
+  Future<List<Map<String, dynamic>>> getCountTypeMapList() async {
+    Database db = await database;
+
+    var cTypeList = await db.query(CountType.countTypeTable);
+    return cTypeList;
+  }
+
+  Future<List<CountType>> getCountTypeList() async {
+    var mapList = await getCountTypeMapList();
+    int count = mapList.length;
+
+    List<CountType> cTypeList = [];
+
+    for (int i = 0; i < count; i++) {
+      cTypeList.add(CountType.fromMapObject(mapList[i]));
+    }
+
+    return cTypeList;
+  }
+
+  Future<int> truncateCountType() async {
+    Database db = await database;
+
+    int result = await db.rawDelete('DELETE FROM ${CountType.countTypeTable};');
+    return result;
+  }
+
+  Future<int> insertCountType(CountType newRecord) async {
+    Database db = await database;
+
+    int result = await db.insert(CountType.countTypeTable, newRecord.toMap());
+    return result;
+  }
+
+  Future<int> updateCountType(CountType changedRecord) async {
+    Database db = await database;
+
+    int result = await db.update(CountType.countTypeTable, changedRecord.toMap(), where: '${CountType.colId} = ?', whereArgs: [changedRecord.id]);
+    return result;
+  }
+
+  Future<int> deleteCountType(CountType deleteRecord) async {
+    Database db = await database;
+
+    int result = await db.delete(CountType.countTypeTable, where: '${CountType.colId} = ?', whereArgs: [deleteRecord.id]);
+    return result;
+  }
+
+  // CountType queryes //
+
 }

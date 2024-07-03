@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:training_helper_app/utils/helper_exception.dart';
 
@@ -16,7 +18,7 @@ class CountType {
   String get name => _name;
 
   set name (String newName) {
-    if (newName.isNotEmpty) {
+    if (newName.isEmpty) {
       throw HelperException("Name cannot be empty!"); // TODO: Make localization
     }
     if (newName.length > 255) {
@@ -24,6 +26,10 @@ class CountType {
     }
 
     _name = newName;
+  }
+
+  set id (int? newId) { 
+    _id = newId;
   }
 
   Map<String, dynamic> toMap() {
@@ -44,9 +50,9 @@ class CountType {
     await db.execute('''
       CREATE TABLE $countTypeTable (
         $colId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $colName VARCHAR NOT NULL
+        $colName VARCHAR NOT NULL UNIQUE
       );
     ''');
-    print("$countTypeTable created");
+    log("$countTypeTable created");
   }
 }

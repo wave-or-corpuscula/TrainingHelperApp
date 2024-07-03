@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:training_helper_app/utils/db_helper.dart';
@@ -11,9 +13,9 @@ void main() {
   databaseFactory = databaseFactoryFfi;
   
   test('Testing database initialization', () async {
-    print("App started");
+    log("App started");
     DatabaseHelper helper = DatabaseHelper();
     await helper.database;
-    print("App finished");
+    log("App finished");
   });
 }
