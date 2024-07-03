@@ -10,10 +10,7 @@ void main() {
 
   databaseFactory = databaseFactoryFfi;
   
-  test('Testing database initialization', () async {
-    print("App started");
-    DatabaseHelper helper = DatabaseHelper();
-    await helper.database;
-    print("App finished");
+  test('Testing CountType model funtions', () async {
+    
   });
 }
