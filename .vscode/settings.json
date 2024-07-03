@@ -1,0 +1,9 @@
+{
+    "cmake.ignoreCMakeListsMissing": true,
+    "editor.foldingStrategy": "indentation",
+    "editor.showFoldingControls": "mouseover",
+    "editor.stickyScroll.defaultModel": "foldingProviderModel",
+    "C_Cpp.codeFolding": "disabled",
+    "dart.analysisServerFolding": false,
+    "editor.foldingHighlight": true
+}
