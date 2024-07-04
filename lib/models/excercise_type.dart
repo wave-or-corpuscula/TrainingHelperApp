@@ -23,16 +23,27 @@ class ExcerciseType {
   int? get id => _id;
   String get name => _name; 
   String get postfix => _postfix;
-  int get count_type_id => _count_type_id;
-  // String get count_type => 
-
-  // TODO: Write setters for fields
+  int get countTypeId => _count_type_id;
 
   set name(String newName) {
     if (newName.isEmpty) {
       throw HelperException('Name can\'t be empty'); // TODO: Make localization
     }
     _name = newName;
+  }
+
+  set postfix(String newPostfix) {
+    if (postfix.isEmpty) {
+      throw HelperException('Name can\'t be empty'); // TODO: Make localization
+    }
+    _postfix = newPostfix;
+  }
+
+  set countTypeId (int newCountTypeId) {
+    
+    // TODO: Implement check if `newCountTypeId` exists
+    
+    _count_type_id = newCountTypeId;
   }
 
   Map<String, dynamic> toMap() {

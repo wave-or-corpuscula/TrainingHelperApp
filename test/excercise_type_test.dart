@@ -47,6 +47,6 @@ Future<void> getRecordsWithTitle(String title) async {
   log(title);
   var records = await ExcerciseType.getList();
   for (int i = 0; i < records.length; i++) {
-    log('${records[i].id}: ${records[i].name} ${records[i].postfix} ${records[i].count_type_id}');
+    log('${records[i].id}: ${records[i].name} ${records[i].postfix} ${records[i].countTypeId}');
   }
 }
