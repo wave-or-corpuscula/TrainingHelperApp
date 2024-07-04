@@ -13,8 +13,8 @@ void main() {
   databaseFactory = databaseFactoryFfi;
   
   test('Testing database initialization', () async {
-    log("App started");
-    await SingletonDatabase.database;
-    log("App finished");
+    log('App started');
+    Database db = await SingletonDatabase.database;
+    log('App finished');
   });
 }

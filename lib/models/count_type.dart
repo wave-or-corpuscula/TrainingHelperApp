@@ -9,7 +9,7 @@ class CountType {
   int? _id;
   String _name;
 
-  static String countTypeTable = "CountType";
+  static String tableCountType = "CountType";
   static String colId = "id";
   static String colName = "name";
 
@@ -49,12 +49,11 @@ class CountType {
 
   static void createTable(Database db) async {
     await db.execute('''
-      CREATE TABLE $countTypeTable (
+      CREATE TABLE $tableCountType (
         $colId INTEGER PRIMARY KEY AUTOINCREMENT,
         $colName VARCHAR NOT NULL UNIQUE
-      );
-    ''');
-    log("$countTypeTable created");
+      );''');
+    log('$tableCountType created');
   }
 
   // Query methods
@@ -62,7 +61,7 @@ class CountType {
   static Future<List<Map<String, dynamic>>> getMapList() async {
     Database db = await SingletonDatabase.database;
 
-    var cTypeList = await db.query(CountType.countTypeTable);
+    var cTypeList = await db.query(CountType.tableCountType);
     return cTypeList;
   }
 
@@ -82,28 +81,28 @@ class CountType {
   static Future<int> truncate() async {
     Database db = await SingletonDatabase.database;
 
-    int result = await db.rawDelete('DELETE FROM ${CountType.countTypeTable};');
+    int result = await db.rawDelete('DELETE FROM ${CountType.tableCountType};');
     return result;
   }
 
   static Future<int> insert(CountType newRecord) async {
     Database db = await SingletonDatabase.database;
 
-    int result = await db.insert(CountType.countTypeTable, newRecord.toMap());
+    int result = await db.insert(CountType.tableCountType, newRecord.toMap());
     return result;
   }
 
   static Future<int> update(CountType changedRecord) async {
     Database db = await SingletonDatabase.database;
 
-    int result = await db.update(CountType.countTypeTable, changedRecord.toMap(), where: '${CountType.colId} = ?', whereArgs: [changedRecord.id]);
+    int result = await db.update(CountType.tableCountType, changedRecord.toMap(), where: '${CountType.colId} = ?', whereArgs: [changedRecord.id]);
     return result;
   }
 
   static Future<int> delete(CountType deleteRecord) async {
     Database db = await SingletonDatabase.database;
 
-    int result = await db.delete(CountType.countTypeTable, where: '${CountType.colId} = ?', whereArgs: [deleteRecord.id]);
+    int result = await db.delete(CountType.tableCountType, where: '${CountType.colId} = ?', whereArgs: [deleteRecord.id]);
     return result;
   }
 }
