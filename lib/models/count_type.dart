@@ -1,7 +1,8 @@
 import 'dart:developer';
-
 import 'package:sqflite/sqflite.dart';
+
 import 'package:training_helper_app/utils/helper_exception.dart';
+import 'package:training_helper_app/utils/singleton_db.dart';
 
 
 class CountType {
@@ -54,5 +55,55 @@ class CountType {
       );
     ''');
     log("$countTypeTable created");
+  }
+
+  // Query methods
+
+  static Future<List<Map<String, dynamic>>> getMapList() async {
+    Database db = await SingletonDatabase.database;
+
+    var cTypeList = await db.query(CountType.countTypeTable);
+    return cTypeList;
+  }
+
+  static Future<List<CountType>> getList() async {
+    var mapList = await getMapList();
+    int count = mapList.length;
+
+    List<CountType> cTypeList = [];
+
+    for (int i = 0; i < count; i++) {
+      cTypeList.add(CountType.fromMapObject(mapList[i]));
+    }
+
+    return cTypeList;
+  }
+
+  static Future<int> truncate() async {
+    Database db = await SingletonDatabase.database;
+
+    int result = await db.rawDelete('DELETE FROM ${CountType.countTypeTable};');
+    return result;
+  }
+
+  static Future<int> insert(CountType newRecord) async {
+    Database db = await SingletonDatabase.database;
+
+    int result = await db.insert(CountType.countTypeTable, newRecord.toMap());
+    return result;
+  }
+
+  static Future<int> update(CountType changedRecord) async {
+    Database db = await SingletonDatabase.database;
+
+    int result = await db.update(CountType.countTypeTable, changedRecord.toMap(), where: '${CountType.colId} = ?', whereArgs: [changedRecord.id]);
+    return result;
+  }
+
+  static Future<int> delete(CountType deleteRecord) async {
+    Database db = await SingletonDatabase.database;
+
+    int result = await db.delete(CountType.countTypeTable, where: '${CountType.colId} = ?', whereArgs: [deleteRecord.id]);
+    return result;
   }
 }
