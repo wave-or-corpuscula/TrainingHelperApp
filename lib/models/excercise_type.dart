@@ -28,12 +28,17 @@ class ExcerciseType {
 
   // TODO: Write setters for fields
 
+  set name(String newName) {
+    if (newName.isEmpty) {
+      throw HelperException('Name can\'t be empty'); // TODO: Make localization
+    }
+    _name = newName;
+  }
+
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
 
-    if (id != null) {
-      map[colId] = _id;
-    }
+    map[colId] = _id;
     map[colName] = _name;
     map[colPostfix] = _postfix;
     map[colCountTypeId] = _count_type_id;
@@ -94,7 +99,7 @@ class ExcerciseType {
   static Future<int> update(ExcerciseType changedRecord) async {
     Database db = await SingletonDatabase.database;
 
-    int result = await db.update(tableExcersiceType, changedRecord.toMap());
+    int result = await db.update(tableExcersiceType, changedRecord.toMap(), where: '$colId = ?', whereArgs: [changedRecord.id]);
     return result;
   }
 

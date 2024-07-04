@@ -12,10 +12,41 @@ void main() {
   databaseFactory = databaseFactoryFfi;
   
   test('Testing functions of ExcerciseType model', () async {
-    ExcerciseType newType = ExcerciseType('Pulling', 'amount', 1);
+    // ExcerciseType newType = ExcerciseType('Pulling', 'amount', 1);
 
-    await ExcerciseType.insert(newType);
+    var exList = [
+      ExcerciseType('Pulling', 'times', 2),
+      ExcerciseType('Pushing', 'times', 2),
+      ExcerciseType('Holding', 's', 1),
+    ];
 
-    // TODO: Write tests for all methods
+    await ExcerciseType.truncate();
+
+    await getRecordsWithTitle('Before insert');
+
+    for (int i = 0; i < exList.length; i++) {
+      await ExcerciseType.insert(exList[i]);
+    }
+
+    await getRecordsWithTitle('\nAfter insert');
+
+    
+    var exListfromDb = await ExcerciseType.getList();
+    exListfromDb[0].name = 'New name';
+    await ExcerciseType.update(exListfromDb[0]);
+
+    await getRecordsWithTitle('\nAfter udate');
+
+    await ExcerciseType.delete(exListfromDb[1]);
+
+    await getRecordsWithTitle('\nAfter delete');
   });
+}
+
+Future<void> getRecordsWithTitle(String title) async {
+  log(title);
+  var records = await ExcerciseType.getList();
+  for (int i = 0; i < records.length; i++) {
+    log('${records[i].id}: ${records[i].name} ${records[i].postfix} ${records[i].count_type_id}');
+  }
 }
