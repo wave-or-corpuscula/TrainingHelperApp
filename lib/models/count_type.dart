@@ -81,28 +81,28 @@ class CountType {
   static Future<int> truncate() async {
     Database db = await SingletonDatabase.database;
 
-    int result = await db.rawDelete('DELETE FROM ${CountType.tableCountType};');
+    int result = await db.rawDelete('DELETE FROM $tableCountType;');
     return result;
   }
 
   static Future<int> insert(CountType newRecord) async {
     Database db = await SingletonDatabase.database;
 
-    int result = await db.insert(CountType.tableCountType, newRecord.toMap());
+    int result = await db.insert(tableCountType, newRecord.toMap());
     return result;
   }
 
   static Future<int> update(CountType changedRecord) async {
     Database db = await SingletonDatabase.database;
 
-    int result = await db.update(CountType.tableCountType, changedRecord.toMap(), where: '${CountType.colId} = ?', whereArgs: [changedRecord.id]);
+    int result = await db.update(tableCountType, changedRecord.toMap(), where: '${CountType.colId} = ?', whereArgs: [changedRecord.id]);
     return result;
   }
 
   static Future<int> delete(CountType deleteRecord) async {
     Database db = await SingletonDatabase.database;
 
-    int result = await db.delete(CountType.tableCountType, where: '${CountType.colId} = ?', whereArgs: [deleteRecord.id]);
+    int result = await db.delete(tableCountType, where: '$colId = ?', whereArgs: [deleteRecord.id]);
     return result;
   }
 }

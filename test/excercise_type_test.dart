@@ -15,5 +15,7 @@ void main() {
     ExcerciseType newType = ExcerciseType('Pulling', 'amount', 1);
 
     await ExcerciseType.insert(newType);
+
+    // TODO: Write tests for all methods
   });
 }

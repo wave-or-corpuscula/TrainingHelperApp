@@ -34,11 +34,9 @@ class ExcerciseType {
     if (id != null) {
       map[colId] = _id;
     }
-
     map[colName] = _name;
     map[colPostfix] = _postfix;
     map[colCountTypeId] = _count_type_id;
-
     return map;
   }
 
@@ -62,10 +60,48 @@ class ExcerciseType {
 
   // Query methods
 
+  static Future<List<Map<String, dynamic>>> getMapList() async {
+    Database db = await SingletonDatabase.database;
+
+    var mapList = await db.query(tableExcersiceType);
+    return mapList;
+  }
+
+  static Future<List<ExcerciseType>> getList() async {
+    var mapList = await getMapList();
+
+    List<ExcerciseType> exList = [];
+    for (int i = 0; i < mapList.length; i++) {
+      exList.add(ExcerciseType.fromMapObject(mapList[i]));
+    }
+    return exList;
+  }
+
+  static Future<int> truncate() async {
+    Database db = await SingletonDatabase.database;
+
+    int result = await db.rawDelete('DELETE FROM $tableExcersiceType');
+    return result;
+  }
+
   static Future<int> insert(ExcerciseType newRecord) async {
     Database db = await SingletonDatabase.database;
 
     int result = await db.insert(ExcerciseType.tableExcersiceType, newRecord.toMap());
+    return result;
+  }
+
+  static Future<int> update(ExcerciseType changedRecord) async {
+    Database db = await SingletonDatabase.database;
+
+    int result = await db.update(tableExcersiceType, changedRecord.toMap());
+    return result;
+  }
+
+  static Future<int> delete(ExcerciseType deleteRecord) async {
+    Database db = await SingletonDatabase.database;
+
+    int result = await db.delete(tableExcersiceType, where: '$colId = ?', whereArgs: [deleteRecord.id]);
     return result;
   }
 }
