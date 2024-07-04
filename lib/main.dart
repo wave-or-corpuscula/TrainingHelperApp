@@ -1,47 +1,26 @@
 import 'package:flutter/material.dart';
 
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+import 'package:training_helper_app/screens/admin/tables_choice_screen.dart';
+import 'package:training_helper_app/screens/admin/count_type_records.dart';
+
+
 void main() {
-  runApp(const MainApp());
-}
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  sqfliteFfiInit();
 
-  @override
-  Widget build(BuildContext context) {
-    
-    return MaterialApp(
+  databaseFactory = databaseFactoryFfi;
+
+  runApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: (){}, 
-                      child: const Icon(Icons.arrow_back_ios_new_rounded, size: 30)
-                    ),
-                    IconButton(
-                      onPressed: (){}, 
-                      icon: const Icon(Icons.search_sharp, size: 30)
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Hello World!',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const TableChoice(),
+        '/count_type_records': (context) => const CountTypeRecords(),
+      },
+    )
+  );
 }
+
