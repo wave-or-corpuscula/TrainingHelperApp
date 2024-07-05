@@ -3,26 +3,26 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:training_helper_app/models/count_type.dart';
+import 'package:training_helper_app/models/excercise_type.dart';
 
-import 'package:training_helper_app/screens/admin/count_type_details.dart';
+import 'package:training_helper_app/screens/admin/excercise_type_details.dart';
 
 
-class CountTypeRecords extends StatefulWidget {
-  const CountTypeRecords({super.key});
+class ExcerciseTypeRecords extends StatefulWidget {
+  const ExcerciseTypeRecords({super.key});
 
   @override
-  State<CountTypeRecords> createState() => _CountTypeRecordsState();
+  State<ExcerciseTypeRecords> createState() => _ExcerciseTypeRecordsState();
 }
 
-class _CountTypeRecordsState extends State<CountTypeRecords> {
-
-  List<CountType> cTypeList = [];
+class _ExcerciseTypeRecordsState extends State<ExcerciseTypeRecords> {
+  List<ExcerciseType> recordsList = [];
   int count = 0;
 
   @override
   Widget build(BuildContext context) {
 
-    if (cTypeList.isEmpty) {
+    if (recordsList.isEmpty) {
       updateListView();
     }
 
@@ -36,7 +36,7 @@ class _CountTypeRecordsState extends State<CountTypeRecords> {
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: const Text('Типы счета'), // TODO: Localization
+        title: const Text('Типы упражнений'), // TODO: Localization
         leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_outlined),
             onPressed: () {
@@ -45,23 +45,23 @@ class _CountTypeRecordsState extends State<CountTypeRecords> {
           ),
       ),
       body: SafeArea(
-        child: getCountTypeListView(),
+        child: getListView(),
       ),
     );
   }
 
-  ListView getCountTypeListView() {
+  ListView getListView() {
     return ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
         return Card(
           color: Colors.white,
           elevation: 2.0,
-          child:  ListTile(
-            title: Text(cTypeList[position].name),
+          child: ListTile(
+            title: Text(recordsList[position].name),
             subtitle: const Text('Нажмите чтобы изменить'), // TODO: Localization
             onTap: () {
-              navigateToDetails('Изменить запись', record: cTypeList[position]); // TODO: Localization
+              navigateToDetails('Изменить запись', record: recordsList[position]); // TODO: Localization
             }
           ),
         );
@@ -70,32 +70,23 @@ class _CountTypeRecordsState extends State<CountTypeRecords> {
   }
 
   void updateListView() {
-    Future<List<CountType>> cTypeFutureList = CountType.getList();
-    cTypeFutureList.then((cTypeListUpdated) {
+    Future<List<ExcerciseType>> futureList = ExcerciseType.getList();
+    futureList.then((recordsListFromDb) {
       setState(() {
-        cTypeList = cTypeListUpdated;
-        count = cTypeListUpdated.length;
+        recordsList = recordsListFromDb;
+        count = recordsListFromDb.length;
       });
     });
   }
 
-  void navigateToDetails(String title, {CountType? record}) async {
+  void navigateToDetails(String title, {ExcerciseType? record}) async {
     bool updateRequired = await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return CountTypeDetails(title, countTypeRecord: record,);
+      return ExcerciseTypeDetails(title, record: record);
     }));
 
     if (updateRequired) {
       updateListView();
     }
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(
-      snackBar, 
-      snackBarAnimationStyle: AnimationStyle(
-        duration: const Duration(milliseconds: 250),
-    ));
   }
 
   void navigateBack({bool updateRequired = false}) {

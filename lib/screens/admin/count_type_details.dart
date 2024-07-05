@@ -6,9 +6,9 @@ import 'package:training_helper_app/models/count_type.dart';
 class CountTypeDetails extends StatefulWidget {
 
   final String _title;
-  CountType? countTypeRecord;
+  final CountType? countTypeRecord;
 
-  CountTypeDetails(this._title, {super.key, this.countTypeRecord});
+  const CountTypeDetails(this._title, {super.key, this.countTypeRecord});
 
   @override
   State<CountTypeDetails> createState() => _CountTypeDetailsState();
@@ -78,6 +78,7 @@ class _CountTypeDetailsState extends State<CountTypeDetails> {
                       ),
                       onPressed: () {
                         _delete();
+                        _showSnackBar(context, 'Запись удалена');
                       }, 
                       child: const Text(
                         'Удалить'
@@ -100,12 +101,25 @@ class _CountTypeDetailsState extends State<CountTypeDetails> {
     CountType? newRecord;
     if (widget.countTypeRecord == null) {
       newRecord = CountType(nameController.text);
-      await CountType.insert(newRecord);
+      await CountType.insert(newRecord); // TODO: Catch possible exceptions
+      if (!mounted) return;
+      _showSnackBar(context, 'Запись создана');
     }
     else {
       widget.countTypeRecord?.name = nameController.text;
-      await CountType.update(widget.countTypeRecord!);
+      await CountType.update(widget.countTypeRecord!); // TODO: Catch possible exceptions
+      if (!mounted) return;
+      _showSnackBar(context, 'Запись изменена');
     }
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(
+      snackBar, 
+      snackBarAnimationStyle: AnimationStyle(
+      duration: const Duration(milliseconds: 250),
+    ));
   }
 
   void navigateBack({bool updateRequired = false}) {
@@ -118,6 +132,7 @@ class _CountTypeDetailsState extends State<CountTypeDetails> {
 
     if (widget.countTypeRecord != null) {
       await CountType.delete(widget.countTypeRecord!);
+      // TODO: Catch possible exceptions
     }
 
   }

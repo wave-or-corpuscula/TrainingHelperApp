@@ -105,4 +105,12 @@ class CountType {
     int result = await db.delete(tableCountType, where: '$colId = ?', whereArgs: [deleteRecord.id]);
     return result;
   }
+
+  static Future<CountType> get(int id) async {
+    Database db = await SingletonDatabase.database;
+
+    var mapList = await db.query(tableCountType, where: '$colId = ?', whereArgs: [id]);
+    var result = CountType.fromMapObject(mapList[0]);
+    return result;
+  }
 }

@@ -25,6 +25,10 @@ class ExcerciseType {
   String get postfix => _postfix;
   int get countTypeId => _count_type_id;
 
+  set id (int? newId) {
+    _id = newId;
+  }
+
   set name(String newName) {
     if (newName.isEmpty) {
       throw HelperException('Name can\'t be empty'); // TODO: Make localization

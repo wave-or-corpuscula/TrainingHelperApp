@@ -4,6 +4,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:training_helper_app/screens/admin/tables_choice_screen.dart';
 import 'package:training_helper_app/screens/admin/count_type_records.dart';
+import 'package:training_helper_app/screens/admin/excercise_type_records.dart';
 
 
 void main() {
@@ -19,6 +20,7 @@ void main() {
       routes: {
         '/': (context) => const TableChoice(),
         '/count_type_records': (context) => const CountTypeRecords(),
+        '/excercise_type_records': (context) => const ExcerciseTypeRecords(),
       },
     )
   );

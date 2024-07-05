@@ -33,7 +33,9 @@ class TableChoice extends StatelessWidget {
                   ),
                   const SizedBox(height: 10,),
                   TextButton(
-                    onPressed: () {}, 
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/excercise_type_records');
+                    }, 
                     style: const ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll(Colors.amber),
                       minimumSize: WidgetStatePropertyAll(Size(175, 40)),
