@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
-import 'package:training_helper_app/models/count_type.dart';
 import 'package:training_helper_app/models/excercise_type.dart';
 
 import 'package:training_helper_app/screens/admin/excercise_type_details.dart';
