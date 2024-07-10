@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:training_helper_app/models/base_model.dart';
 
 import 'package:training_helper_app/models/count_type.dart';
 
@@ -68,11 +69,11 @@ class _CountTypeRecordsState extends State<CountTypeRecords> {
   }
 
   void updateListView() {
-    Future<List<CountType>> cTypeFutureList = CountType.getList();
-    cTypeFutureList.then((cTypeListUpdated) {
+    Future<List<BaseModel>> cTypeFutureList = CountType.query().getList();
+    cTypeFutureList.then((baseModelList) {
       setState(() {
-        cTypeList = cTypeListUpdated;
-        count = cTypeListUpdated.length;
+        cTypeList = baseModelList.cast<CountType>();
+        count = cTypeList.length;
       });
     });
   }

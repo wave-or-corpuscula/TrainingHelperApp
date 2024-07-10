@@ -1,21 +1,30 @@
 import 'dart:developer';
 import 'package:sqflite/sqflite.dart';
 
+import 'package:training_helper_app/models/excercise_type.dart';
+import 'package:training_helper_app/models/base_model.dart';
+
 import 'package:training_helper_app/utils/helper_exception.dart';
 import 'package:training_helper_app/utils/singleton_db.dart';
 
 
-class CountType {
-  int? _id;
-  String _name;
+class CountType extends BaseModel {
+  late String _name;
 
-  static String tableCountType = "CountType";
-  static String colId = "id";
-  static String colName = "name";
+  static const String tableName = "CountType";
+  static const String colId = "id";
+  static const String colName = "name";
 
-  CountType(this._name);
+  CountType.query() : super();
+  
+  CountType(this._name) : super();
 
-  int? get id => _id;
+  @override
+  String get tableNameBase => tableName;
+
+  @override
+  String get idColumnName => colId;
+
   String get name => _name;
 
   set name (String newName) {
@@ -29,88 +38,45 @@ class CountType {
     _name = newName;
   }
 
-  set id (int? newId) { 
-    _id = newId;
-  }
-
+  @override
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
 
     if (id != null) {
-      map[colId] = _id;
+      map[colId] = id;
     }
     map[colName] = _name;
     return map;
   }
 
-  CountType.fromMapObject(Map<String, dynamic> map)
-  : _id = map[colId],
-    _name = map[colName];
+  CountType.fromMapObject(super.map)
+  : _name = map[colName],
+    super.fromMapObject();
+
+  @override
+  BaseModel fromMapObject(Map<String, dynamic> map) {
+    return CountType.fromMapObject(map);
+  }
+
+  // --- QUERY METHODS --- //
 
   static void createTable(Database db) async {
     await db.execute('''
-      CREATE TABLE $tableCountType (
+      CREATE TABLE $tableName (
         $colId INTEGER PRIMARY KEY AUTOINCREMENT,
         $colName VARCHAR NOT NULL UNIQUE
       );''');
-    log('$tableCountType created');
+    log('$tableName created');
   }
 
-  // Query methods
-
-  static Future<List<Map<String, dynamic>>> getMapList() async {
+  @override
+  Future<int> delete() async {
     Database db = await SingletonDatabase.database;
 
-    var cTypeList = await db.query(CountType.tableCountType);
-    return cTypeList;
-  }
 
-  static Future<List<CountType>> getList() async {
-    var mapList = await getMapList();
-    int count = mapList.length;
+    int result = await ExcerciseType.cascadeCountTypeDeleted(id!);
+    result = await db.delete(tableName, where: '$colId = ?', whereArgs: [id]);
 
-    List<CountType> cTypeList = [];
-
-    for (int i = 0; i < count; i++) {
-      cTypeList.add(CountType.fromMapObject(mapList[i]));
-    }
-
-    return cTypeList;
-  }
-
-  static Future<int> truncate() async {
-    Database db = await SingletonDatabase.database;
-
-    int result = await db.rawDelete('DELETE FROM $tableCountType;');
-    return result;
-  }
-
-  static Future<int> insert(CountType newRecord) async {
-    Database db = await SingletonDatabase.database;
-
-    int result = await db.insert(tableCountType, newRecord.toMap());
-    return result;
-  }
-
-  static Future<int> update(CountType changedRecord) async {
-    Database db = await SingletonDatabase.database;
-
-    int result = await db.update(tableCountType, changedRecord.toMap(), where: '${CountType.colId} = ?', whereArgs: [changedRecord.id]);
-    return result;
-  }
-
-  static Future<int> delete(CountType deleteRecord) async {
-    Database db = await SingletonDatabase.database;
-
-    int result = await db.delete(tableCountType, where: '$colId = ?', whereArgs: [deleteRecord.id]);
-    return result;
-  }
-
-  static Future<CountType> get(int id) async {
-    Database db = await SingletonDatabase.database;
-
-    var mapList = await db.query(tableCountType, where: '$colId = ?', whereArgs: [id]);
-    var result = CountType.fromMapObject(mapList[0]);
     return result;
   }
 }

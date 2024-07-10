@@ -101,13 +101,13 @@ class _CountTypeDetailsState extends State<CountTypeDetails> {
     CountType? newRecord;
     if (widget.countTypeRecord == null) {
       newRecord = CountType(nameController.text);
-      await CountType.insert(newRecord); // TODO: Catch possible exceptions
+      await newRecord.insert(); // TODO: Catch possible exceptions
       if (!mounted) return;
       _showSnackBar(context, 'Запись создана');
     }
     else {
       widget.countTypeRecord?.name = nameController.text;
-      await CountType.update(widget.countTypeRecord!); // TODO: Catch possible exceptions
+      await widget.countTypeRecord!.update(); // TODO: Catch possible exceptions
       if (!mounted) return;
       _showSnackBar(context, 'Запись изменена');
     }
@@ -126,14 +126,13 @@ class _CountTypeDetailsState extends State<CountTypeDetails> {
     Navigator.pop(context, updateRequired);
   }  
 
-  void _delete() async {
-
-    navigateBack(updateRequired: true);
+  Future<void> _delete() async {
 
     if (widget.countTypeRecord != null) {
-      await CountType.delete(widget.countTypeRecord!);
+      await widget.countTypeRecord!.delete().then((_) {
+        navigateBack(updateRequired: true);
+      });
       // TODO: Catch possible exceptions
     }
-
   }
 }

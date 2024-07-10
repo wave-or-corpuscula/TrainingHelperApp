@@ -36,13 +36,14 @@ class _ExcerciseTypeDetailsState extends State<ExcerciseTypeDetails> {
     });
   }
 
+  // TODO: Implement with updated class
   Future<void> loadCountTypes() async {
-    var mapList = await CountType.getList();
+    // var mapList = await CountType.getList();
     setState(() {
-      countTypeList = mapList;
-      if (mapList.isNotEmpty) {
-        selectedCountType = countTypeList.first;
-      }
+      // countTypeList = mapList;
+      // if (mapList.isNotEmpty) {
+      //   selectedCountType = countTypeList.first;
+      // }
     });
   }
 

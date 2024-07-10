@@ -26,7 +26,12 @@ class SingletonDatabase {
   static Future<Database> initializeDatabase() async {
 		String path = 'appDb.db';
 
-		var notesDatabase = await openDatabase(path, version: 1, onCreate: _createDb, onConfigure: _onConfigure);
+		var notesDatabase = await openDatabase(
+      path, 
+      version: 1, 
+      onCreate: _createDb, 
+      onConfigure: _onConfigure,
+    );
 		return notesDatabase;
 	}
 

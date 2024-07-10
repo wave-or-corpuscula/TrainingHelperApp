@@ -12,11 +12,11 @@ class ExcerciseType {
   String _postfix;
   int _count_type_id;
 
-  static String tableExcersiceType = 'ExcerciseType';
-  static String colId = 'id';
-  static String colName = 'name';
-  static String colPostfix = 'postfix';
-  static String colCountTypeId = 'count_type_id';
+  static const String tableExcersiceType = 'ExcerciseType';
+  static const String colId = 'id';
+  static const String colName = 'name';
+  static const String colPostfix = 'postfix';
+  static const String colCountTypeId = 'count_type_id';
 
   ExcerciseType(this._name, this._postfix, this._count_type_id);
 
@@ -73,7 +73,7 @@ class ExcerciseType {
         $colName VARCHAR NOT NULL,
         $colPostfix VARCHAR NOT NULL,
         $colCountTypeId INTEGER,
-        FOREIGN KEY ($colCountTypeId) REFERENCES ${CountType.tableCountType}(${CountType.colId}) ON DELETE SET NULL ON UPDATE CASCADE
+        FOREIGN KEY ($colCountTypeId) REFERENCES ${CountType.tableName}(${CountType.colId}) ON DELETE SET NULL ON UPDATE CASCADE
       );''');
       log('$tableExcersiceType created');
   }
@@ -122,6 +122,13 @@ class ExcerciseType {
     Database db = await SingletonDatabase.database;
 
     int result = await db.delete(tableExcersiceType, where: '$colId = ?', whereArgs: [deleteRecord.id]);
+    return result;
+  }
+
+  static Future<int> cascadeCountTypeDeleted(int countTypeId) async {
+    Database db = await SingletonDatabase.database;
+
+    int result = await db.delete(tableExcersiceType, where: '$colCountTypeId = ?', whereArgs: [countTypeId]);
     return result;
   }
 }
