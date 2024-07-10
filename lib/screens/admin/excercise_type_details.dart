@@ -38,12 +38,12 @@ class _ExcerciseTypeDetailsState extends State<ExcerciseTypeDetails> {
 
   // TODO: Implement with updated class
   Future<void> loadCountTypes() async {
-    // var mapList = await CountType.getList();
+    var mapList = await CountType.query().getList();
     setState(() {
-      // countTypeList = mapList;
-      // if (mapList.isNotEmpty) {
-      //   selectedCountType = countTypeList.first;
-      // }
+      countTypeList = mapList.cast<CountType>();
+      if (mapList.isNotEmpty) {
+        selectedCountType = countTypeList.first;
+      }
     });
   }
 
@@ -110,7 +110,6 @@ class _ExcerciseTypeDetailsState extends State<ExcerciseTypeDetails> {
                       return DropdownMenuEntry<CountType>(
                         value: record,
                         label: record.name,
-                        // child: Text(record.name),
                       );
                     }).toList(),
                   ),
@@ -170,11 +169,11 @@ class _ExcerciseTypeDetailsState extends State<ExcerciseTypeDetails> {
     String? messageText;
     ExcerciseType newRecord = ExcerciseType(nameController.text, postfixController.text, selectedCountType!.id!);
     if (widget.record == null) {
-      await ExcerciseType.insert(newRecord); // TODO: Catch possible exceptions
+      await newRecord.insert(); // TODO: Catch possible exceptions
       messageText = 'Запись создана';
     } else {
       newRecord.id = widget.record!.id;
-      await ExcerciseType.update(newRecord); // TODO: Catch possible exceptions      
+      await newRecord.update(); // TODO: Catch possible exceptions      
       messageText = 'Запись изменена';
     }
     navigateBack(updateRequired: true);
@@ -187,7 +186,7 @@ class _ExcerciseTypeDetailsState extends State<ExcerciseTypeDetails> {
     String messageText;
     navigateBack(updateRequired: true);
     if (widget.record != null) {
-      await ExcerciseType.delete(widget.record!);
+      await widget.record!.delete();
       messageText = 'Запись удалена';
     } else {
       messageText = 'Запись не удалена';

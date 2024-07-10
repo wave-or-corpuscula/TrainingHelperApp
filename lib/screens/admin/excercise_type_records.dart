@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:training_helper_app/models/base_model.dart';
 
 import 'package:training_helper_app/models/excercise_type.dart';
 
@@ -67,11 +68,11 @@ class _ExcerciseTypeRecordsState extends State<ExcerciseTypeRecords> {
   }
 
   void updateListView() {
-    Future<List<ExcerciseType>> futureList = ExcerciseType.getList();
-    futureList.then((recordsListFromDb) {
+    Future<List<BaseModel>> futureList = ExcerciseType.query().getList();
+    futureList.then((baseModelList) {
       setState(() {
-        recordsList = recordsListFromDb;
-        count = recordsListFromDb.length;
+        recordsList = baseModelList.cast<ExcerciseType>();
+        count = recordsList.length;
       });
     });
   }

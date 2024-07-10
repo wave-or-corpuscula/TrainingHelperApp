@@ -74,7 +74,7 @@ class CountType extends BaseModel {
     Database db = await SingletonDatabase.database;
 
 
-    int result = await ExcerciseType.cascadeCountTypeDeleted(id!);
+    int result = await ExcerciseType.query().cascadeCountTypeDeleted(id!);
     result = await db.delete(tableName, where: '$colId = ?', whereArgs: [id]);
 
     return result;
