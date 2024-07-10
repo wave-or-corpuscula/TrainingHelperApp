@@ -3,31 +3,35 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:training_helper_app/utils/helper_exception.dart';
 import 'package:training_helper_app/utils/singleton_db.dart';
+
 import 'package:training_helper_app/models/excercise_type.dart';
+import 'package:training_helper_app/models/base_model.dart';
 
 
-class Excercise {
-  int? _id;
-  String _name;
-  int _excercise_type_id;
-  String _comment;
+class Excercise extends BaseModel {
+  late String _name;
+  late int _excercise_type_id;
+  late String _comment;
 
-  static const String tableExcersice = 'Excercise';
+  static const String tableName = 'Excercise';
   static const String colId = 'id';
   static const String colName = 'name';
   static const String colExcerciseTypeId = 'excercise_type_id';
   static const String colComment = 'comment';
 
-  Excercise(this._name, this._excercise_type_id, this._comment);
+  Excercise.query() : super();
 
-  int? get id => _id;
+  Excercise(this._name, this._excercise_type_id, this._comment) : super();
+
+  @override
+  String get tableNameBase => tableName;
+
+  @override
+  String get idColumnName => colId;
+
   String get name => _name;
   int get excerciseTypeId => _excercise_type_id;
   String get comment => _comment;
-
-  set id (int? newId) {
-    _id = newId;
-  }
 
   set name(String newName) {
     if (newName.isEmpty) {
@@ -44,10 +48,11 @@ class Excercise {
     _comment = newComment;
   }
 
+  @override
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
 
-    map[colId] = _id;
+    map[colId] = id;
     map[colName] = _name;
     map[colExcerciseTypeId] = _excercise_type_id;
     map[colComment] = _comment;
@@ -55,11 +60,18 @@ class Excercise {
     return map;
   }
 
-  Excercise.fromMapObject(Map<String, dynamic> map)
-  : _id = map[colId],
-    _name = map[colName],
+  Excercise.fromMapObject(super.map)
+  : _name = map[colName],
     _excercise_type_id = map[colExcerciseTypeId],
-    _comment = map[colComment];
+    _comment = map[colComment],
+    super.fromMapObject();
+
+  @override
+  BaseModel fromMapObject(Map<String, dynamic> map) {
+    return Excercise.fromMapObject(map);
+  }
+
+  // --- QUERY METHODS --- //
 
   static void createTable(Database db) async {
     await db.execute('''
@@ -70,15 +82,6 @@ class Excercise {
         $colComment TEXT,
         FOREIGN KEY ($colExcerciseTypeId) REFERENCES ExcerciseType(${ExcerciseType.colId}) ON DELETE CASCADE ON UPDATE CASCADE
       );''');
-      log('$tableExcersice created');
+      log('$tableName created');
   }
-
-  // Query methods
-
-  // static Future<List<Map<String, dynamic>>> getMapList() async {
-  //   Database db = await SingletonDatabase.database;
-
-  //   var mapList = await db.query(table)
-  // }
-
 }

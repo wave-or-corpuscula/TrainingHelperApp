@@ -96,4 +96,9 @@ class ExcerciseType extends BaseModel {
     int result = await db.delete(tableName, where: '$colCountTypeId = ?', whereArgs: [countTypeId]);
     return result;
   }
+
+  Future<int> getRelatedExcercisesCount() async {
+    // TODO: Implement to show how many excercises will be deleted after deletion on of this ExcerciseType
+    throw UnimplementedError();
+  }
 }

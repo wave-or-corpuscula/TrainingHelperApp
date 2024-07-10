@@ -184,7 +184,6 @@ class _ExcerciseTypeDetailsState extends State<ExcerciseTypeDetails> {
   void _delete() async {
     
     String messageText;
-    navigateBack(updateRequired: true);
     if (widget.record != null) {
       await widget.record!.delete();
       messageText = 'Запись удалена';
@@ -192,6 +191,9 @@ class _ExcerciseTypeDetailsState extends State<ExcerciseTypeDetails> {
       messageText = 'Запись не удалена';
     }
 
+    navigateBack(updateRequired: true);
+    
+    if(!mounted) return;
     _showSnackBar(context, messageText);
   }
 
